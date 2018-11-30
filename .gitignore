@@ -1,0 +1,15 @@
+/node_modules
+/.tmp
+/src/bower_components
+/private
+/.vscode
+
+# Elastic Beanstalk Files
+
+.elasticbeanstalk/*
+
+!.elasticbeanstalk/*.cfg.yml
+
+!.elasticbeanstalk/*.global.yml
+
+keymanager.pem
