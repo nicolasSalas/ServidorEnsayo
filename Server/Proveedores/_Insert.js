@@ -3,15 +3,21 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
+const urlencodedParser = bodyParser.urlencoded({
+    extended: false
+})
 
-const Enterprise_evaluation = require('../../config/models/Enterprise_evaluation'); //MODEL
-const CRUD = require('../../config/functions/API'); // API
-const { ReadSectorID_From_Enterprise_Evaluation } = require('../../config/functions/validator/Read'); // VALIDATOR
-const { SECRET_TOKEN_CLIENT } = require('../../config'); //TOKEN
+const Proveedores = require('../../config/models/Proveedores'); //MODEL
+const CRUD = require('../../config/functions/API'); //API
+const {
+    InsertProveedores
+} = require('../../config/functions/validator/Insert'); //VALIDATOR
 const KEY = require('../../config/functions/token'); //TOKEN VALIDATOR
+const {
+    SECRET_TOKEN_CLIENT
+} = require('../../config'); //TOKEN
 
-router.post('/GetSectorId_from_enterprise_evaluation', KEY.verifyToken,  urlencodedParser, (req, res) => {
+router.post('/InsertProveedores', KEY.verifyToken, urlencodedParser, (req, res) => {
 
     if (!req.body || req.body.length === 0) {
         console.log('request body not found');
@@ -23,9 +29,10 @@ router.post('/GetSectorId_from_enterprise_evaluation', KEY.verifyToken,  urlenco
             res.sendStatus(403);
         } else {
             let data = req.body;
+
             const {
                 error
-            } = Joi.validate(data, ReadSectorID_From_Enterprise_Evaluation);
+            } = Joi.validate(data, InsertProveedores);
 
             if (error) {
                 res
@@ -35,12 +42,11 @@ router.post('/GetSectorId_from_enterprise_evaluation', KEY.verifyToken,  urlenco
                         error: error.details
                     });
             } else {
-                CRUD.ReadWhere(Enterprise_evaluation, data, res);
+                CRUD.Insert(Proveedores, data, res);
 
             }
         }
     });
-
 
 });
 

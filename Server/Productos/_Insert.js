@@ -3,15 +3,21 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
+const urlencodedParser = bodyParser.urlencoded({
+    extended: false
+})
 
-const Enterprise_evaluation = require('../../config/models/Enterprise_evaluation'); //MODEL
+const Productos = require('../../config/models/Productos'); //MODEL
 const CRUD = require('../../config/functions/API'); //API
-const { InsertEnterprise_evaluation } = require('../../config/functions/validator/Insert'); //VALIDATOR
+const {
+    InsertProductos
+} = require('../../config/functions/validator/Insert'); //VALIDATOR
 const KEY = require('../../config/functions/token'); //TOKEN VALIDATOR
-const { SECRET_TOKEN_CLIENT } = require('../../config'); //TOKEN
+const {
+    SECRET_TOKEN_CLIENT
+} = require('../../config'); //TOKEN
 
-router.post('/InsertEnterprise_evaluation', KEY.verifyToken,  urlencodedParser, (req, res) => {
+router.post('/InsertProductos', KEY.verifyToken, urlencodedParser, (req, res) => {
 
     if (!req.body || req.body.length === 0) {
         console.log('request body not found');
@@ -26,7 +32,7 @@ router.post('/InsertEnterprise_evaluation', KEY.verifyToken,  urlencodedParser, 
 
             const {
                 error
-            } = Joi.validate(data, InsertEnterprise_evaluation);
+            } = Joi.validate(data, InsertProductos);
 
             if (error) {
                 res
@@ -36,7 +42,7 @@ router.post('/InsertEnterprise_evaluation', KEY.verifyToken,  urlencodedParser, 
                         error: error.details
                     });
             } else {
-                CRUD.Insert(Enterprise_evaluation, data, res);
+                CRUD.Insert(Productos, data, res);
 
             }
         }

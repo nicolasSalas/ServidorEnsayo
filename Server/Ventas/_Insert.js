@@ -3,15 +3,21 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
+const urlencodedParser = bodyParser.urlencoded({
+    extended: false
+})
 
-const Enterprise_stored = require('../../config/models/Enterprise_stored'); //MODEL
-const CRUD = require('../../config/functions/API'); // API
-const { InsertEnterprise_stored } = require('../../config/functions/validator/Insert'); // VALIDATOR
-const { SECRET_TOKEN_CLIENT } = require('../../config'); //TOKEN
+const Ventas = require('../../config/models/Ventas'); //MODEL
+const CRUD = require('../../config/functions/API'); //API
+const {
+    InsertVentas
+} = require('../../config/functions/validator/Insert'); //VALIDATOR
 const KEY = require('../../config/functions/token'); //TOKEN VALIDATOR
+const {
+    SECRET_TOKEN_CLIENT
+} = require('../../config'); //TOKEN
 
-router.post('/InsertEnterprise_stored', KEY.verifyToken,  urlencodedParser, (req, res) => {
+router.post('/InsertVentas', KEY.verifyToken, urlencodedParser, (req, res) => {
 
     if (!req.body || req.body.length === 0) {
         console.log('request body not found');
@@ -26,7 +32,7 @@ router.post('/InsertEnterprise_stored', KEY.verifyToken,  urlencodedParser, (req
 
             const {
                 error
-            } = Joi.validate(data, InsertEnterprise_stored);
+            } = Joi.validate(data, InsertVentas);
 
             if (error) {
                 res
@@ -36,10 +42,12 @@ router.post('/InsertEnterprise_stored', KEY.verifyToken,  urlencodedParser, (req
                         error: error.details
                     });
             } else {
-                CRUD.Insert(Enterprise_stored, data, res);
+                CRUD.Insert(Ventas, data, res);
+
             }
         }
     });
+
 });
 
 module.exports = router;

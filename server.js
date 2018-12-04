@@ -25,32 +25,61 @@ app.get("/", function (request, resp, next) {
   resp.render("index");
 });
 
-var Insert_EnterpriseEvaluation = require("./Server/EnterpriseEvaluation/_Insert");
-var Insert_EnterpriseSelected = require("./Server/EnterpriseSelected/_Insert");
-var Insert_EnterpriseStored = require("./Server/EnterpriseStored/_Insert");
-var Insert_Link = require("./Server/Link/_Insert");
+// Aca Crearemos una variable para cada uno de los INSERT y le asignamos nuestro server
+var InsertCategoria = require("./Server/Categoria/_Insert");
+var InsertClientes = require("./Server/Clientes/_Insert");
+var InsertFacturas = require("./Server/Facturas/_Insert");
+var InsertProductos = require("./Server/Productos/_Insert");
+var InsertProveedores = require("./Server/Proveedores/_Insert");
+var InsertVentas = require("./Server/Ventas/_Insert");
 
 
-//
 
-var Read_Link = require("./Server/Link/_Read");
-var Read_View = require("./Server/GetDataView/_Read");
-var Read_GetEnterpriseEvaluation = require("./Server/EnterpriseEvaluation/_Read");
-var GetEnterprise_Stored = require("./Server/EnterpriseStored/_ReadWhere");
+
+// Aca crearemos una variable para cada uno de los READ
+var Read_GetCategoria = require("./Server/Categoria/_Read");
+var Read_GetClientes = require("./Server/Clientes/_Read");
+var Read_GetFacturas = require("./Server/Facturas/_Read");
+var Read_GetProductos = require("./Server/Productos/_Read");
+var Read_GetProveedores = require("./Server/Proveedores/_Read");
+var Read_GetVentas = require("./Server/Ventas/_Read");
+
+
+
+// Aca crearemos una variable para cada uno de los READ_WHERE
+var GetCategoria_ID = require("./Server/Categoria/_ReadWhere");
+var GetClientes_ID = require("./Server/Clientes/_ReadWhere");
+var GetFacturas_ID = require("./Server/Facturas/_ReadWhere");
+var GetProductos_ID = require("./Server/Productos/_ReadWhere");
+var GetVentas_ID = require("./Server/Ventas/_ReadWhere");
+
 app.use(
   "/webservices",
-  Insert_EnterpriseEvaluation,
-  Insert_EnterpriseSelected,
-  Insert_EnterpriseStored,
-  Insert_Link,
-  GetEnterprise_Stored,
-  Read_Link,
-  Read_GetEnterpriseEvaluation,
-  Read_View
+  //READ
+  Read_GetCategoria,
+  Read_GetClientes,
+  Read_GetFacturas,
+  Read_GetProductos,
+  Read_GetProveedores,
+  Read_GetVentas,
+  //READ_WHERE
+  GetCategoria_ID,
+  GetClientes_ID,
+  GetFacturas_ID,
+  GetProductos_ID,
+  GetVentas_ID,
+  //INSERT
+  InsertCategoria,
+  InsertClientes,
+  InsertFacturas,
+  InsertProductos,
+  InsertProveedores,
+  InsertVentas,
+
 );
 
 app.listen(8081, function () {
-  console.log("El servidor Esta En llamas!");
+  console.log("Welcome to the Server...");
 });
 
 // var connection = mysql.createConnection({   host: process.env.RDS_HOSTNAME,

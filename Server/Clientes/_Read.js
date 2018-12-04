@@ -2,15 +2,19 @@ const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const urlencodedParser = bodyParser.urlencoded({
+  extended: false
+});
 
 const KEY = require("../../config/functions/token");
-const { SECRET_TOKEN_CLIENT } = require("../../config");
-const Enterprise_evaluation = require("../../config/models/Enterprise_evaluation"); //MODEL
+const {
+  SECRET_TOKEN_CLIENT
+} = require("../../config");
+const Clientes = require("../../config/models/Clientes"); //MODEL
 const CRUD = require("../../config/functions/API"); // API
 
 router.get(
-  "/GetEnterpriseEvaluation",
+  "/GetClientes",
   KEY.verifyToken,
   urlencodedParser,
   (req, res) => {
@@ -23,8 +27,8 @@ router.get(
       if (err) {
         res.sendStatus(403);
       } else {
-        let data = ["ID", "Enterprise_Name", "Contact_Name", "Mail", "Expert"];
-        CRUD.Read(Enterprise_evaluation, data, res);
+        let data = ["ID", "Name", "Address", "Phone"];
+        CRUD.Read(Clientes, data, res);
       }
     });
   }

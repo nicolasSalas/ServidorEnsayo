@@ -3,15 +3,21 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
-const urlencodedParser = bodyParser.urlencoded({extended: false})
+const urlencodedParser = bodyParser.urlencoded({
+    extended: false
+})
 
-const Enterprise_stored = require('../../config/models/Enterprise_stored'); //MODEL
+const Facturas = require('../../config/models/Facturas'); //MODEL
 const CRUD = require('../../config/functions/API'); // API
-const {ReadEnterprise_Stored} = require('../../config/functions/validator/Read'); // VALIDATOR
+const {
+    ReadFacturas_And_ID
+} = require('../../config/functions/validator/Read'); // VALIDATOR
+const {
+    SECRET_TOKEN_CLIENT
+} = require('../../config'); //TOKEN
 const KEY = require('../../config/functions/token'); //TOKEN VALIDATOR
-const { SECRET_TOKEN_CLIENT } = require('../../config'); //TOKEN
 
-router.post('/GetEnterprise_Stored', KEY.verifyToken,  urlencodedParser, (req, res) => {
+router.post('/GetFacturas_ID', KEY.verifyToken, urlencodedParser, (req, res) => {
 
     if (!req.body || req.body.length === 0) {
         console.log('request body not found');
@@ -25,7 +31,7 @@ router.post('/GetEnterprise_Stored', KEY.verifyToken,  urlencodedParser, (req, r
             let data = req.body;
             const {
                 error
-            } = Joi.validate(data, ReadEnterprise_Stored);
+            } = Joi.validate(data, ReadFacturas_And_ID);
 
             if (error) {
                 res
@@ -35,11 +41,13 @@ router.post('/GetEnterprise_Stored', KEY.verifyToken,  urlencodedParser, (req, r
                         error: error.details
                     });
             } else {
-                CRUD.ReadWhere(Enterprise_stored, data, res);
+                CRUD.ReadWhere(Facturas, data, res);
 
             }
         }
     });
+
+
 });
 
 module.exports = router;

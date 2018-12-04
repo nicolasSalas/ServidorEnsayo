@@ -3,15 +3,21 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
+const urlencodedParser = bodyParser.urlencoded({
+    extended: false
+})
 
-const Enterprise_selected = require('../../config/models/Enterprise_selected'); //MODEL
-const CRUD = require('../../config/functions/API'); // API
-const { InsertEnterprise_selected } = require('../../config/functions/validator/Insert'); // VALIDATOR
+const Facturas = require('../../config/models/Facturas'); //MODEL
+const CRUD = require('../../config/functions/API'); //API
+const {
+    InsertFacturas
+} = require('../../config/functions/validator/Insert'); //VALIDATOR
 const KEY = require('../../config/functions/token'); //TOKEN VALIDATOR
-const { SECRET_TOKEN_CLIENT } = require('../../config'); //TOKEN
+const {
+    SECRET_TOKEN_CLIENT
+} = require('../../config'); //TOKEN
 
-router.post('/InsertEnterprise_Selected', KEY.verifyToken,  urlencodedParser, (req, res) => {
+router.post('/InsertFacturas', KEY.verifyToken, urlencodedParser, (req, res) => {
 
     if (!req.body || req.body.length === 0) {
         console.log('request body not found');
@@ -22,12 +28,11 @@ router.post('/InsertEnterprise_Selected', KEY.verifyToken,  urlencodedParser, (r
         if (err) {
             res.sendStatus(403);
         } else {
-
             let data = req.body;
 
             const {
                 error
-            } = Joi.validate(data, InsertEnterprise_selected);
+            } = Joi.validate(data, InsertFacturas);
 
             if (error) {
                 res
@@ -37,10 +42,12 @@ router.post('/InsertEnterprise_Selected', KEY.verifyToken,  urlencodedParser, (r
                         error: error.details
                     });
             } else {
-                CRUD.Insert(Enterprise_selected, data, res);
+                CRUD.Insert(Facturas, data, res);
+
             }
         }
     });
+
 });
 
 module.exports = router;
